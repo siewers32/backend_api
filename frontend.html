@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +11,14 @@
         }
 
         label {
-            display:block;
+            display: block;
             margin-bottom: 5px;
         }
     </style>
 </head>
 <p><a href="api_v2.php?action=all">All cars</a></p>
 <h3>Search Car</h3>
-<form action="api_v2.php" method="GET">
+<form id="search" action="api_v2.php" method="GET">
     <label>
         Kenteken
         <input type="text" name="Kenteken">
@@ -25,7 +26,7 @@
     <input type="submit">
 </form>
 <h3>Create Car</h3>
-<form action="api_v2.php" method="POST">
+<form id="create" action="api_v2.php" method="POST">
     <label>
         Kenteken
         <input type="text" name="Kenteken">
@@ -49,7 +50,7 @@
     <input type="submit">
 </form>
 <h3>Delete Car</h3>
-<form action="api_v2.php" method="DELETE">
+<form id="delete" action="api_v2.php" method="DELETE">
     <label>
         Kenteken
         <input type="text" name="Kenteken">
@@ -57,7 +58,7 @@
     <input type="submit">
 </form>
 <h3>Update Car</h3>
-<form action="api_v2.php" method="PUT">
+<form id="update" action="api_v2.php" method="PUT">
     <label>
         Kenteken
         <input type="text" name="Kenteken">
@@ -80,6 +81,6 @@
     </label>
     <input type="submit">
 </form>
-
 </body>
+
 </html>

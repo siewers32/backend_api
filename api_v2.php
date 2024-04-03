@@ -1,8 +1,8 @@
 <?php 
 $host = '127.0.0.1';
 $db   = 'autoverhuur';
-$user = 'root';
-$pass = '';
+$user = 'web';
+$pass = '230mod';
 $port = 3306;
 $charset = 'utf8mb4';
 

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cars</title>
+    <script mode="defer" src="wc/my-car.js"></script>
+    <style>
+        #cars {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 700px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <template id="my-car">
+        <style>
+            * {
+                font-family: Arial, Helvetica, sans-serif;
+                background-color: rgb(209, 209, 209);
+            }
+
+            p {
+                color: green;
+            }
+
+            div {
+                border-radius: 8px;
+                border: 1px red solid;
+                padding: 8px;
+                margin: 8px;
+            }
+        </style>
+        <div>
+            <p>
+                Kenteken: <slot name="kenteken">Hier komt het kenteken</slot>
+            </p>
+            <p>
+                Merk: <slot name="merk">Hier komt het kenteken</slot>
+            </p>
+            <p>
+                Type: <slot name="type">Hier komt het kenteken</slot>
+            </p>
+            <p id="km">
+                Kilometerstand: <slot name="kilometerstand">Hier komt de kilometerstand</slot>
+            </p>
+        </div>
+    </template>
+
+    <div id="cars"></div>
+
+    <script>
+        fetch('http://localhost:8866/api_v2.php', {
+            mode: 'cors'
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                console.log('Request successful', data);
+                for (i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                    addElement(data[i]);
+                }
+            })
+            .catch(function (error) {
+                console.log('Request failed', error)
+            });
+
+        function addElement(el) {
+            let cars = document.getElementById("cars")
+            car = document.createElement('my-car')
+            car.shadowRoot.querySelector('slot[name="kenteken"]').innerHTML = el.Kenteken
+            car.shadowRoot.querySelector('slot[name="merk"]').innerHTML = el.Merk
+            car.shadowRoot.querySelector('slot[name="type"]').innerHTML = el.Type
+            car.shadowRoot.querySelector('slot[name="kilometerstand"]').innerHTML = el.Kilometerstand
+            car.setAttribute("km", el.Kilometerstand)
+            cars.appendChild(car)
+        }
+    </script>
+</body>
+
+</html>
