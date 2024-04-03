@@ -1,4 +1,4 @@
-<?php 
+<?php
 $host = '127.0.0.1';
 $db   = 'autoverhuur';
 $user = 'web';
@@ -14,22 +14,22 @@ $options = [
 ];
 $pdo = new PDO($dsn, $user, $pass, $options);
 
-if($_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_GET['Kenteken'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_GET['Kenteken'])) {
     $stmt = $pdo->prepare("SELECT * from autos");
     $stmt->execute();
     http_response_code(200);
     echo json_encode($stmt->fetchAll());
-} 
+}
 
-if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['Kenteken'])) {
-    $stmt = $pdo->prepare("SELECT * from autos where kenteken = :kenteken");
-    $stmt->bindParam(":kenteken", $_GET["id"]);
+if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['Kenteken'])) {
+    $stmt = $pdo->prepare("SELECT * from autos where Kenteken = :kenteken");
+    $stmt->bindParam(":kenteken", $_GET["Kenteken"]);
     $stmt->execute();
     http_response_code(200);
     echo json_encode($stmt->fetch());
 }
 
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST["method"])) {
     $req = readFromInput();
     extract($req);
     $stmt = $pdo->prepare("INSERT INTO autos VALUES (?,?,?,?,?)");
@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo json_encode("record added");
 }
 
-if($_SERVER['REQUEST_METHOD'] == 'PUT') {
+if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
     $req = readFromInput();
     extract($req);
     $stmt = $pdo->prepare("UPDATE autos set Kenteken = ?, Merk = ?, Type = ?, DatumAPK = ?, Kilometerstand  = ?");
@@ -47,13 +47,13 @@ if($_SERVER['REQUEST_METHOD'] == 'PUT') {
     echo json_encode("record added");
 }
 
-if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $req = readFromInput();
     extract($req);
     $stmt = $pdo->prepare("DELETE from autos where Kenteken = ?");
     $stmt->execute([$Kenteken]);
     http_response_code(200);
-    echo json_encode("record met kenteken ".$Kenteken." is verwijderd");
+    echo json_encode("record met kenteken " . $Kenteken . " is verwijderd");
 }
 
 

@@ -34,7 +34,7 @@ class MyCar extends HTMLElement {
   function updateStyle(elem) {
     const car = elem.shadowRoot.getElementById("km");
     kmcolor = "yellow"
-    if(elem.getAttribute("km") > 20000) {
+    if(elem.getAttribute("km") > 50000) {
       kmcolor = "red"
     }
     console.log(car)
