@@ -14,14 +14,14 @@ $options = [
 ];
 $pdo = new PDO($dsn, $user, $pass, $options);
 
-if($_GET["action"] == 'all') {
+if($_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_GET['Kenteken'])) {
     $stmt = $pdo->prepare("SELECT * from autos");
     $stmt->execute();
     http_response_code(200);
     echo json_encode($stmt->fetchAll());
 } 
 
-if($_GET["action"] == 'search') {
+if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['Kenteken'])) {
     $stmt = $pdo->prepare("SELECT * from autos where kenteken = :kenteken");
     $stmt->bindParam(":kenteken", $_GET["id"]);
     $stmt->execute();
@@ -29,24 +29,27 @@ if($_GET["action"] == 'search') {
     echo json_encode($stmt->fetch());
 }
 
-if($_GET["action"] == 'create') {
-    extract($_GET);
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $req = readFromInput();
+    extract($req);
     $stmt = $pdo->prepare("INSERT INTO autos VALUES (?,?,?,?,?)");
     $stmt->execute([$Kenteken, $Merk, $Type, $DatumAPK, $Kilometerstand]);
     http_response_code(201);
     echo json_encode("record added");
 }
 
-if($_GET["action"] == 'update') {
-    extract($_GET);
+if($_SERVER['REQUEST_METHOD'] == 'PUT') {
+    $req = readFromInput();
+    extract($req);
     $stmt = $pdo->prepare("UPDATE autos set Kenteken = ?, Merk = ?, Type = ?, DatumAPK = ?, Kilometerstand  = ?");
     $stmt->execute([$Kenteken, $Merk, $Type, $DatumAPK, $Kilometerstand]);
     http_response_code(200);
     echo json_encode("record added");
 }
 
-if($_GET["action"] == 'delete') {
-    extract($_GET);
+if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    $req = readFromInput();
+    extract($req);
     $stmt = $pdo->prepare("DELETE from autos where Kenteken = ?");
     $stmt->execute([$Kenteken]);
     http_response_code(200);
@@ -54,3 +57,9 @@ if($_GET["action"] == 'delete') {
 }
 
 
+function readFromInput()
+{
+    $pre = file_get_contents('php://input');
+    parse_str(trim($pre, "\""), $req);
+    return $req;
+}
